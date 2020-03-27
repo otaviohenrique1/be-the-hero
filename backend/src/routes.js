@@ -6,7 +6,11 @@ const ProfileController = require('./controllers/ProfileController');
 const SessionController = require('./controllers/SessionController');
 const routes = express.Router();
 
-routes.post('/sessions', celebrate({
+routes.post('/sessions', SessionController.create); // Rota de login
+
+routes.get('/ongs', OngController.index); // Rota de listar ongs
+
+routes.post('/ongs', celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required(),
         email: Joi.string().required().email(),
@@ -14,11 +18,7 @@ routes.post('/sessions', celebrate({
         city: Joi.string().required(),
         uf: Joi.string().required().length(2),
     })
-}), SessionController.create); // Rota de login
-
-routes.get('/ongs', OngController.index); // Rota de listar ongs
-
-routes.post('/ongs', OngController.create); // Rota de criar ongs
+}), OngController.create); // Rota de criar ongs
 
 routes.get('/profile', celebrate({
     [Segments.HEADERS]: Joi.object({
